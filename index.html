@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8" />
+    <title>Draw My Bryan</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="src/css/style.css">
+    <script type="text/javascript" src="js/paper.js"></script>
+    <script type="text/paperscript" canvas="myCanvas"></script>
+</head>
+<body>
+
+    <canvas id="myCanvas"></canvas>
+    <div id="side-bar">
+        <div id="palette">
+            <div class="color" id="red"></div>
+            <div class="color" id="orange"></div>
+            <div class="color" id="yellow"></div>
+            <div class="color" id="green"></div>
+            <div class="color" id="blue"></div>
+            <div class="color" id="indigo"></div>
+            <div class="color" id="violet"></div>
+            <div class="color" id="black"></div>
+            <button id="eraser">Eraser!</button>
+        </div>
+
+        <div class="slidecontainer">
+            <p id="brush-width">Change brush size 1:</p>
+            <input type="range" min="1" max="25" value="1" class="slider" id="brush-size-slider">
+        </div>
+        
+    </div>
+    <script type="text/javascript" src="src/index.js"></script>
+    
+</body>
+</html>
