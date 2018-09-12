@@ -1,24 +1,18 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    let ws = new WebSocket('ws://localhost:3000/cable')
-    ws.onopen = event => {
-        const subscribeMsg = {"command":"subscribed","identifier":"{\"channel\":\"ChatChannel\"}"}
-        ws.send(JSON.stringify(subscribeMsg))
+  function openConnection() {
+    // return new WebSocket("ws://localhost:3000/cable")
+    // return new WebSocket("ws://10.39.104.225:3000/cable")
+    return new WebSocket(`ws://localhost:3000/cable`)
+    //url is from live-server frontend
+  }
+
+    let circleWebSocket = openConnection()
+    circleWebSocket.onopen = event => {
+        const subscribeMsg = {"command":"subscribe","identifier":"{\"channel\":\"CirclesChannel\"}"}
+        circleWebSocket.send(JSON.stringify(subscribeMsg))
     }
 
-
-
-
-    // // event emmited when connected
-    // ws.onopen = function () {
-    //     console.log('websocket is connected ...')
-    //     // sending a send event to websocket server
-    //     ws.send('connected')
-    // }
-    // // event emmited when receiving message
-    // ws.onmessage = function (ev) {
-    //     console.log(ev);
-    // }
     var color_form = document.getElementById("color-form")
     let canvas = document.getElementById("myCanvas")
     // let context = canvas.getContext('2d')
@@ -34,50 +28,63 @@ document.addEventListener('DOMContentLoaded', () => {
         // Create a simple drawing tool:
         var tool = new Tool();
         let path = new Path();
-        let color = black;
-        let strokeWidth = 1
+        let color = "black";
+        let strokeWidth = 5
         path.strokeColor = color
         brushWidth.innerText = `Change brush size ${path.strokeWidth}:`
 
-        // Define a mousedown and mousedrag handler
+      tool.onMouseDown = function (event) {
+          path = new Path();
+          path.strokeColor = color
+          path.strokeWidth = strokeWidth
 
-        tool.onMouseDown = function (event) {
-            path = new Path();
-            path.strokeColor = color
-            path.strokeWidth = strokeWidth
-
-            path.add(event.point);
-            // let circleDraw = Path.Circle(event.point.x, event.point.y, 5)
-            console.log(path)
+          const msg = {
+            "command":"message",
+          "identifier":"{\"channel\":\"CirclesChannel\"}",
+          "data":`{\"action\": \"send_circle\",\"x\": \"${event.point.x}\",\"y\": \"${event.point.y}\",\"strokeColor\": \"${color}\",\"strokeWidth\": \"${strokeWidth}\"}`
         }
+        console.log(msg)
+        circleWebSocket.send(JSON.stringify(msg))
+      }
 
+        tool.maxDistance = 10
         tool.onMouseDrag = function (event) {
             var circle = new Path.Circle({
                 center: event.middlePoint,
                 radius: strokeWidth
             });
             circle.fillColor = color;
-            console.log(path);
 
-            fetch('http://localhost:3000/circles', {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    circle: {
-                        x: event.point.x,
-                        y: event.point.y,
-                        strokeWidth: strokeWidth,
-                        strokeColor: color
-                    }
-                })
-            })//end fetch post
-        }
+            const msg = {
+              "command":"message",
+            "identifier":"{\"channel\":\"CirclesChannel\"}",
+            "data":`{
+              \"action\": \"send_circle\",
+              \"x\": \"${event.point.x}\",
+              \"y\": \"${event.point.y}\",
+              \"strokeColor\": \"${color}\",
+              \"strokeWidth\": \"${strokeWidth}\"
+            }`
+          }
+          // console.log(msg)
+          circleWebSocket.send(JSON.stringify(msg))
+        }//end mouseDrag
 
         tool.onMouseUp = function () {
             path = null
         }
+
+        liveCircleSocket(circleWebSocket)
+
+        function liveCircleSocket(circleWebSocket) {
+        circleWebSocket.onmessage = event => {
+         console.log(event.data);
+
+          }
+        }//end liveCircleSocket function
+
+
+
 
         palette.addEventListener('click', (e) => {
             if (e.target.className === "color") {
