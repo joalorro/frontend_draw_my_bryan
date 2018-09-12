@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     let ws = new WebSocket('ws://localhost:3000/cable')
-    ws.onopen = event => {
-        const subscribeMsg = {"command":"subscribed","identifier":"{\"channel\":\"ChatChannel\"}"}
+    ws.onopen = (event) => {
+        const subscribeMsg = {"command":"subscribed","identifier":"{\"channel\":\"CirclesChannel\"}"}
         ws.send(JSON.stringify(subscribeMsg))
     }
 
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Create a simple drawing tool:
         var tool = new Tool();
         let path = new Path();
-        let color = black;
+        let color = "black";
         let strokeWidth = 1
         path.strokeColor = color
         brushWidth.innerText = `Change brush size ${path.strokeWidth}:`
@@ -51,6 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log(path)
         }
 
+        tool.maxDistance = 4
         tool.onMouseDrag = function (event) {
             var circle = new Path.Circle({
                 center: event.middlePoint,
@@ -72,7 +73,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         strokeColor: color
                     }
                 })
-            })//end fetch post
+            })
+                .then(res=> res.json())
+                .then(console.log(color))
         }
 
         tool.onMouseUp = function () {
