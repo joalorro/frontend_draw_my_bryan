@@ -1,18 +1,33 @@
 /* Page Layouts */
 
-#side-bar {
+body {
+  display: inline-flex;
   background-color: #7fff00;
-  float: left;
+}
+
+#enter {
+  border-radius: 25%;
+  background-color: "pink";
+  color: #7fff00;
+}
+
+#side-bar {
+  background: #7fff00;
+  float: right;
   height: 100%;
-  margin-right: 100px
+  margin-left: 100px;
+  width:100%;
 }
 
 #myCanvas {
   border: solid;
   border-width: light;
-  width: 500px;
-  height: 500px;
-  
+  min-width: 500px;
+  min-height: 500px;
+  margin-top: 100px;
+  margin-right:100px;
+  margin-left: 100px;
+  background-color: white;
 }
 
 #palette {
@@ -25,9 +40,7 @@
   
   width: 50px;
   height: 120px;
-  top: 70px;
-  left: 70px;
-  float: left
+  margin-top: 100px;
 }
 .color {
   border-color: #000;
@@ -70,3 +83,12 @@
   margin: 0 auto;
 }
 
+/* other classes */
+
+.hidden {
+  display: none;
+}
+
+.hidden {
+  display: none;
+}
