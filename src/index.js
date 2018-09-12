@@ -8,14 +8,13 @@ enterBtn.addEventListener('click', () => {
     enterBtn.classList.add('hidden')
     body.append(createSidebar())
     loadCanvas()
-    
-    ws = estConnection()
-    ws.onopen = (event) => {
-        console.log('socket is connected')
-        // const subscribeMsg = {"command":"subscribed","identifier":"{\"channel\":\"CirclesChannel\"}"}
-        // ws.send(JSON.stringify(subscribeMsg))
+
+    let circleWebSocket = openConnection()
+    circleWebSocket.onopen = event => {
+        const subscribeMsg = {"command":"subscribe","identifier":"{\"channel\":\"CirclesChannel\"}"}
+        circleWebSocket.send(JSON.stringify(subscribeMsg))
     }
-})
+
 
 function createSidebar() {
     const sidebar = document.createElement('div')
@@ -45,6 +44,7 @@ function loadCanvas() {
     const canvas = document.querySelector('#myCanvas')
     const brushWidth = document.querySelector('#brush-width')
     canvas.classList.remove('hidden')
+
     var color_form = document.getElementById("color-form")
     // let context = canvas.getContext('2d')
     const palette = document.querySelector('#palette')
@@ -62,36 +62,65 @@ function loadCanvas() {
 
     // Define a mousedown and mousedrag handler
 
+
     tool.onMouseDown = function (event) {
         path = new Path();
         path.strokeColor = color
         path.strokeWidth = strokeWidth
 
-        path.add(event.point);
-        // let circleDraw = Path.Circle(event.point.x, event.point.y, 5)
-        console.log(path)
+        const msg = {
+            "command":"message",
+            "identifier":"{\"channel\":\"CirclesChannel\"}",
+            "data":`{\"action\": \"send_circle\",\"x\": \"${event.point.x}\",\"y\": \"${event.point.y}\",\"strokeColor\": \"${color}\",\"strokeWidth\": \"${strokeWidth}\"}`
+        }
+        console.log(msg)
+        circleWebSocket.send(JSON.stringify(msg))
     }
 
-    tool.maxDistance = 4
+    tool.maxDistance = 10
+
     tool.onMouseDrag = function (event) {
         var circle = new Path.Circle({
             center: event.middlePoint,
             radius: strokeWidth
         });
         circle.fillColor = color;
-        console.log(path);
-    }
+
+        const msg = {
+            "command":"message",
+            "identifier":"{\"channel\":\"CirclesChannel\"}",
+            "data":`{
+                \"action\": \"send_circle\",
+                \"x\": \"${event.point.x}\",
+                \"y\": \"${event.point.y}\",
+                \"strokeColor\": \"${color}\",
+                \"strokeWidth\": \"${strokeWidth}\"
+            }`
+        }
+        circleWebSocket.send(JSON.stringify(msg))
+    }//end mouseDrag
 
     tool.onMouseUp = function () {
         path = null
     }
-        ``
+
+    liveCircleSocket(circleWebSocket)
+
+    function liveCircleSocket(circleWebSocket) {
+        circleWebSocket.onmessage = event => {
+        console.log(event.data);
+
+        }
+    }//end liveCircleSocket function
+
     palette.addEventListener('click', (e) => {
         if (e.target.className === "color") {
             color = e.target.id
             path.strokeColor = color
         }
     })
+
+        
 
     eraser.addEventListener('click', () => {
         strokeWidth = 5;
@@ -103,8 +132,8 @@ function loadCanvas() {
         strokeWidth = brush_size_slider.value
         brushWidth.innerText = `Brush size ${strokeWidth}:`
     })
-}
-
-function estConnection() {
-    return new WebSocket('ws://localhost:3000/cable')
-}
+    function openConnection() {
+        return new WebSocket('ws://localhost:3000/cable')
+    }
+    }
+})
