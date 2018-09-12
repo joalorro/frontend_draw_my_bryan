@@ -1,6 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // var ws = new WebSocket('ws://localhost:3000');
+    let ws = new WebSocket('ws://localhost:3000/cable')
+    ws.onopen = event => {
+        const subscribeMsg = {"command":"subscribed","identifier":"{\"channel\":\"ChatChannel\"}"}
+        ws.send(JSON.stringify(subscribeMsg))
+    }
+
+
+
+
     // // event emmited when connected
     // ws.onopen = function () {
     //     console.log('websocket is connected ...')
@@ -42,8 +50,29 @@ document.addEventListener('DOMContentLoaded', () => {
             // let circleDraw = Path.Circle(event.point.x, event.point.y, 5)
             console.log(path)
         }
+
         tool.onMouseDrag = function (event) {
-            path.add(event.point);
+            var circle = new Path.Circle({
+                center: event.middlePoint,
+                radius: strokeWidth
+            });
+            circle.fillColor = color;
+            console.log(path);
+
+            fetch('http://localhost:3000/circles', {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    circle: {
+                        x: event.point.x,
+                        y: event.point.y,
+                        strokeWidth: strokeWidth,
+                        strokeColor: color
+                    }
+                })
+            })//end fetch post
         }
 
         tool.onMouseUp = function () {
