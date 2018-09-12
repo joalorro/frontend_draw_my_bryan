@@ -12,10 +12,9 @@ enterBtn.addEventListener('click', () => {
     ws = estConnection()
     ws.onopen = (event) => {
         console.log('socket is connected')
-        const subscribeMsg = {"command":"subscribed","identifier":"{\"channel\":\"CirclesChannel\"}"}
-        ws.send(JSON.stringify(subscribeMsg))
+        // const subscribeMsg = {"command":"subscribed","identifier":"{\"channel\":\"CirclesChannel\"}"}
+        // ws.send(JSON.stringify(subscribeMsg))
     }
-    
 })
 
 function createSidebar() {
@@ -81,23 +80,6 @@ function loadCanvas() {
         });
         circle.fillColor = color;
         console.log(path);
-
-        // fetch('http://localhost:3000/circles', {
-        //     method: "POST",
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify({
-        //         circle: {
-        //             x: event.point.x,
-        //             y: event.point.y,
-        //             strokeWidth: strokeWidth,
-        //             strokeColor: color
-        //         }
-        //     })
-        // })
-        //     .then(res=> res.json())
-        //     .then(console.log(color))
     }
 
     tool.onMouseUp = function () {
