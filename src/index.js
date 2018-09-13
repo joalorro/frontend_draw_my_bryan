@@ -43,11 +43,11 @@ document.addEventListener('DOMContentLoaded', () => {
           "identifier":"{\"channel\":\"CirclesChannel\"}",
           "data":`{\"action\": \"send_circle\",\"x\": \"${event.point.x}\",\"y\": \"${event.point.y}\",\"strokeColor\": \"${color}\",\"strokeWidth\": \"${strokeWidth}\"}`
         }
-        console.log(msg)
+        // console.log(msg)
         circleWebSocket.send(JSON.stringify(msg))
       }
 
-        tool.maxDistance = 10
+        tool.maxDistance = 4
         tool.onMouseDrag = function (event) {
             var circle = new Path.Circle({
                 center: event.middlePoint,
@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
             circle.fillColor = color;
 
             const msg = {
-              "command":"message",
+            "command":"message",
             "identifier":"{\"channel\":\"CirclesChannel\"}",
             "data":`{
               \"action\": \"send_circle\",
@@ -77,11 +77,15 @@ document.addEventListener('DOMContentLoaded', () => {
         liveCircleSocket(circleWebSocket)
 
         function liveCircleSocket(circleWebSocket) {
-        circleWebSocket.onmessage = event => {
-         console.log(event.data);
+          circleWebSocket.onmessage = event => {
+            let result = JSON.parse(event.data)
 
-          }
-        }//end liveCircleSocket function
+            if (result['message']['x']) {
+              var circle = new Path.Circle(new Point(parseInt(result['message']['x']), parseInt(result['message']['y'])), result['message']['strokeWidth'])
+              circle.fillColor = result['message']['strokeColor'];
+            }
+          }//end liveCircleSocket function
+        }
 
 
 
