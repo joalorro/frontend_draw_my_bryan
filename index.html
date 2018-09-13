@@ -1,23 +1,68 @@
-
-<!-- <html lang="en" dir="ltr"> -->
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
 <head>
     <meta charset="utf-8" />
     <title>Draw My Bryan</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- style sheets -->
     <link rel="stylesheet" href="src/css/style.css">
+    
+    <!-- JavaScripts -->
     <script type="text/javascript" src="js/paper.js"></script>
     <script type="text/paperscript" canvas="myCanvas"></script>
 </head>
 <body>
-    
-    <div id="login-div">
-        <form action="" id="login-form">
-            <input type="text" id="login-input" placeholder="Enter/Create a Username">
-            <input type="input" id="enter" value="Enter Room!">
-        </form>
+    <!-- SIDE BAR -->
+    <div id="login-layout">
+        <div id="login-div" class="side-bar">
+            <form action="" id="login-form">
+                <input type="text" id="login-input" placeholder="Enter/Create a Username">
+                <input type="submit" class="btn"id="enter" value="Enter Room!">
+            </form>
+        </div>
+
+        <!-- Content -->
+
+        <div id="content-div">
+
+            <h3>Welcome To:</h1>
+            <h1>Draw My Bryan</h1>
+
+        </div>
+    </div>
+    <!-- Paint Room! -->
+    <div id="paintroom" class="hidden paintroom">
+        <canvas id="myCanvas"></canvas>
+        <div id="sidebar-container">
+            <ul id="sidebar-contents">
+                <li>
+                    <div id="palette">
+                        <div class="color" id="red"></div>
+                        <div class="color" id="orange"></div>
+                        <div class="color" id="yellow"></div>
+                        <div class="color" id="green"></div>
+                        <div class="color" id="blue"></div>
+                        <div class="color" id="indigo"></div>
+                        <div class="color" id="violet"></div>
+                        <div class="color" id="black"></div>
+                        <button id="eraser">Eraser!</button>
+                    </div>
+                </li>
+                
+                <li>
+                    <div class="slidecontainer">
+                        <p id="brush-width">Brush size 1:</p>
+                        <input type="range" min="1" max="25" value="1" class="slider" id="brush-size-slider">
+                    </div>
+                </li>
+            </ul>
+            <button id="clear-btn">Clear Canvas</button>
+        </div>
+
+        
     </div>
 
-    <canvas id="myCanvas" class="hidden"></canvas>
     <script type="text/javascript" src="src/index.js"></script>
 </body>
 </html>
