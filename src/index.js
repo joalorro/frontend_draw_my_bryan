@@ -1,15 +1,17 @@
+const loginDiv = document.querySelector('#login-layout')
 const body = document.querySelector('body')
 const enterBtn = document.querySelector('#enter')
+const paintRoom = document.querySelector('#paintroom')
+const clearBtn = document.querySelector('#clear-btn')
 let circleWebSocket
 let userWebSocket
 
-enterBtn.addEventListener('click', () => {
+enterBtn.addEventListener('click', () => {    
     const canvas = document.querySelector('#myCanvas')
     let ws
 
-    enterBtn.parentElement.parentNode.remove()
-    body.append(createSidebar())
-    loadCanvas()
+    loginDiv.remove()
+    loadPaintRoom()
     set_current_user()
 
     circleWebSocket = openConnection()
@@ -55,10 +57,10 @@ enterBtn.addEventListener('click', () => {
         }
         // console.log(msg)
         circleWebSocket.send(JSON.stringify(msg))
-
     }
 
-        tool.maxDistance = 4
+        tool.maxDistance = 1
+
         tool.onMouseDrag = function (event) {
             var circle = new Path.Circle({
                 center: event.middlePoint,
@@ -67,17 +69,17 @@ enterBtn.addEventListener('click', () => {
             circle.fillColor = color;
 
             const msg = {
-            "command":"message",
-            "identifier":"{\"channel\":\"CirclesChannel\"}",
-            "data":`{
-            \"action\": \"send_circle\",
-            \"x\": \"${event.point.x}\",
-            \"y\": \"${event.point.y}\",
-            \"strokeColor\": \"${color}\",                  \"strokeWidth\": \"${strokeWidth}\"
-            }`
-        }
-        // console.log(msg)
-        circleWebSocket.send(JSON.stringify(msg))
+                "command":"message",
+                "identifier":"{\"channel\":\"CirclesChannel\"}",
+                "data":`{
+                \"action\": \"send_circle\",
+                \"x\": \"${event.point.x}\",
+                \"y\": \"${event.point.y}\",
+                \"strokeColor\": \"${color}\",
+                \"strokeWidth\": \"${strokeWidth}\"
+                }`
+            }
+            circleWebSocket.send(JSON.stringify(msg))
         }//end mouseDrag
 
     tool.maxDistance = 10
@@ -103,19 +105,16 @@ enterBtn.addEventListener('click', () => {
         circleWebSocket.send(JSON.stringify(msg))
     }//end mouseDrag
 
-
-        liveCircleSocket(circleWebSocket)
-
-        function liveCircleSocket(circleWebSocket) {
-            circleWebSocket.onmessage = event => {
-                let result = JSON.parse(event.data)
-                console.log(result['message'])
-                if (result['message']['x']) {
-                    var circle = new Path.Circle(new Point(parseInt(result['message']['x']), parseInt(result['message']['y'])), result['message']['strokeWidth'])
-                    circle.fillColor = result['message']['strokeColor'];
-                }
-            }//end liveCircleSocket function
+    function liveCircleSocket(circleWebSocket) {
+        circleWebSocket.onmessage = event => {
+            let result = JSON.parse(event.data)
+            console.log(result['message'])
+            if (result['message']['x']) {
+                var circle = new Path.Circle(new Point(parseInt(result['message']['x']), parseInt(result['message']['y'])), result['message']['strokeWidth'])
+                circle.fillColor = result['message']['strokeColor'];
+            }
         }
+    }
 
     palette.addEventListener('click', (e) => {
         if (e.target.className === "color") {
@@ -136,51 +135,20 @@ enterBtn.addEventListener('click', () => {
     })
 
     liveCircleSocket(circleWebSocket)
+
+    clearBtn.addEventListener('click', () => {
+        
+    })
 })
 
-function loadCanvas() {
-    const canvas = document.querySelector('#myCanvas')
-    canvas.classList.remove('hidden')
+function loadPaintRoom() {
+    paintRoom.classList.remove('hidden')
 }
-    
-
-function liveCircleSocket(circleWebSocket) {
-    circleWebSocket.onmessage = event => {
-        console.log(event.data);
-
-    }
-}//end liveCircleSocket function
-
 
 function openConnection() {
     return new WebSocket('ws://localhost:3000/cable')
 }
 
-function createSidebar() {
-    const sidebar = document.createElement('div')
-    sidebar.className = "side-bar"
-    sidebar.innerHTML = `
-    <div id="palette">
-        <div class="color" id="red"></div>
-        <div class="color" id="orange"></div>
-        <div class="color" id="yellow"></div>
-        <div class="color" id="green"></div>
-        <div class="color" id="blue"></div>
-        <div class="color" id="indigo"></div>
-        <div class="color" id="violet"></div>
-        <div class="color" id="black"></div>
-        <button id="eraser">Eraser!</button>
-    </div>
-
-    <div class="slidecontainer">
-        <p id="brush-width">Brush size 1:</p>
-        <input type="range" min="1" max="25" value="1" class="slider" id="brush-size-slider">
-    </div>
-`
-    return sidebar
-}
-
 function set_current_user() {
 
 }
-
