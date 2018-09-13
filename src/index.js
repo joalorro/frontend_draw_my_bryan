@@ -53,9 +53,32 @@ enterBtn.addEventListener('click', () => {
             "identifier": "{\"channel\":\"CirclesChannel\"}",
             "data": `{\"action\": \"send_circle\",\"x\": \"${event.point.x}\",\"y\": \"${event.point.y}\",\"strokeColor\": \"${color}\",\"strokeWidth\": \"${strokeWidth}\"}`
         }
-        console.log(msg)
+        // console.log(msg)
         circleWebSocket.send(JSON.stringify(msg))
+
     }
+
+        tool.maxDistance = 4
+        tool.onMouseDrag = function (event) {
+            var circle = new Path.Circle({
+                center: event.middlePoint,
+                radius: strokeWidth
+            });
+            circle.fillColor = color;
+
+            const msg = {
+            "command":"message",
+            "identifier":"{\"channel\":\"CirclesChannel\"}",
+            "data":`{
+            \"action\": \"send_circle\",
+            \"x\": \"${event.point.x}\",
+            \"y\": \"${event.point.y}\",
+            \"strokeColor\": \"${color}\",                  \"strokeWidth\": \"${strokeWidth}\"
+            }`
+        }
+        // console.log(msg)
+        circleWebSocket.send(JSON.stringify(msg))
+        }//end mouseDrag
 
     tool.maxDistance = 10
 
@@ -80,9 +103,19 @@ enterBtn.addEventListener('click', () => {
         circleWebSocket.send(JSON.stringify(msg))
     }//end mouseDrag
 
-    tool.onMouseUp = function () {
-        path = null
-    }
+
+        liveCircleSocket(circleWebSocket)
+
+        function liveCircleSocket(circleWebSocket) {
+            circleWebSocket.onmessage = event => {
+                let result = JSON.parse(event.data)
+                console.log(result['message'])
+                if (result['message']['x']) {
+                    var circle = new Path.Circle(new Point(parseInt(result['message']['x']), parseInt(result['message']['y'])), result['message']['strokeWidth'])
+                    circle.fillColor = result['message']['strokeColor'];
+                }
+            }//end liveCircleSocket function
+        }
 
     palette.addEventListener('click', (e) => {
         if (e.target.className === "color") {
