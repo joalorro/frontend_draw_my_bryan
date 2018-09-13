@@ -2,6 +2,24 @@ const body = document.querySelector('body')
 const enterBtn = document.querySelector('#enter')
 let circleWebSocket
 let userWebSocket
+const login_div = document.getElementById("login-div")
+const canvas = document.getElementById("myCanvas")
+const login_form = document.getElementById("login-form")
+
+login_form.addEventListener('submit', (event) => {
+  event.preventDefault()
+  let login_input = document.getElementById('login-input')
+  let submit = document.getElementById("submit")
+  login_input.classList.add('hidden')
+  submit.classList.add('hidden')
+  let username = login_input.value
+  let username_div = document.createElement('div')
+  username_div.innerHTML = `Welcome ${username}`
+
+  enterBtn.classList.remove('hidden')
+  login_div.prepend(username_div)
+
+})
 
 enterBtn.addEventListener('click', () => {
     const canvas = document.querySelector('#myCanvas')
@@ -99,13 +117,11 @@ enterBtn.addEventListener('click', () => {
         circleWebSocket.send(JSON.stringify(msg))
     }//end mouseDrag
 
-
       liveCircleSocket(circleWebSocket)
 
       function liveCircleSocket(circleWebSocket) {
           circleWebSocket.onmessage = event => {
               let result = JSON.parse(event.data)
-              console.log(result['message'])
               if (result['message']['x']) {
                   var circle = new Path.Circle(new Point(parseInt(result['message']['x']), parseInt(result['message']['y'])), result['message']['strokeWidth'])
                   circle.fillColor = result['message']['strokeColor'];
