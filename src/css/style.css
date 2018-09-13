@@ -1,14 +1,8 @@
 /* Page Layouts */
 
-body {
+html {
   display: inline-flex;
-  background-color: #7fff00;
-}
-
-#enter {
-  border-radius: 25%;
-  background-color: "pink";
-  color: #7fff00;
+  padding: 0;
 }
 
 #side-bar {
@@ -85,10 +79,39 @@ body {
 
 /* other classes */
 
-.hidden {
-  display: none;
+/* login "page" */
+
+#login-div {
+  position:relative;
+  background-color: #E6E6FA;
+  padding: 50% 50px;
+  height:100%;
+  width:300px;
+  left: -10px;
+  top: -10px;
+  bottom: -10px;
+}
+
+#login-form {
+  justify-content: center;
+  align-content: center;
+}
+
+#login-input {
+  width:100%;
+  text-align:center;
+  margin: 0 auto;
 }
 
 .hidden {
   display: none;
+}
+
+#enter {
+  position: relative;
+  text-align: center;
+  border-radius: 50%;
+  background: "pink";
+  color: #7fff00;
+  margin: 20 auto;
 }
