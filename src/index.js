@@ -3,16 +3,21 @@ const body = document.querySelector('body')
 const enterBtn = document.querySelector('#enter')
 const paintRoom = document.querySelector('#paintroom')
 const clearBtn = document.querySelector('#clear-btn')
+
+let ctx
+let canvas
 let circleWebSocket
 let userWebSocket
 
 enterBtn.addEventListener('click', () => {    
-    const canvas = document.querySelector('#myCanvas')
-    let ws
+    canvas = document.querySelector('#myCanvas')
+
+    paper.install(window)
+    paper.setup(canvas)
 
     loginDiv.remove()
-    loadPaintRoom()
-    set_current_user()
+    paintRoom.classList.remove('hidden')
+
 
     circleWebSocket = openConnection()
     circleWebSocket.onopen = event => {
@@ -28,13 +33,10 @@ enterBtn.addEventListener('click', () => {
 
     const brushWidth = document.querySelector('#brush-width')
     var color_form = document.getElementById("color-form")
-    // let context = canvas.getContext('2d')
     const palette = document.querySelector('#palette')
     const eraser = document.querySelector('#eraser')
     const brush_size_slider = document.getElementById("brush-size-slider")
 
-    paper.install(window);
-    paper.setup(canvas);
     // Create a simple drawing tool:
     var tool = new Tool();
     let path = new Path();
@@ -135,15 +137,10 @@ enterBtn.addEventListener('click', () => {
     })
 
     liveCircleSocket(circleWebSocket)
-
     clearBtn.addEventListener('click', () => {
-        
+        project.activeLayer.removeChildren()
     })
 })
-
-function loadPaintRoom() {
-    paintRoom.classList.remove('hidden')
-}
 
 function openConnection() {
     return new WebSocket('ws://localhost:3000/cable')

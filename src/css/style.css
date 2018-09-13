@@ -1,13 +1,16 @@
 /* Page Layouts */
 
 html {
-  background: black;
+  background: #2fbfbf;
 }
 
 /* other classes */
 
 /* login "page" */
 
+div {
+  background: #2fbfbf;
+}
 #login-div {
   display: inline-block;
   background-color:rgb(19,20,38);
@@ -39,9 +42,10 @@ html {
   display: inline-block;
   position: relative;
   justify-content: center;
+  width: 100%;
 }
 
-.hidden {
+.hide {
   display: none;
 }
 
@@ -75,6 +79,7 @@ html {
   width: 500px;
   height: 500px;
   background:white;
+  margin: 20px;
 }
 
 #sidebar-container{
