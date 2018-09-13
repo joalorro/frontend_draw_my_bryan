@@ -1,41 +1,115 @@
 /* Page Layouts */
 
 html {
-  background: #2fbfbf;
+  max-height: 1000px;
+  display: inline-flex;
+  
+}
+
+#side-bar {
+  background:#131426;
+  float: right;
+  height: 100%;
+  margin-left: 100px;
+  width:100%;
+}
+
+#myCanvas {
+  border: solid;
+  border-width: light;
+  min-width: 500px;
+  min-height: 500px;
+  margin-top: 100px;
+  margin-right:100px;
+  margin-left: 100px;
+  background-color: white;
+}
+
+#palette {
+  /* display:inline-flex; */
+  
+  border-color: #000;
+  border-bottom-style: solid;
+  border-right-style: solid;
+  border-width: light;
+  
+  width: 50px;
+  height: 120px;
+  margin-top: 100px;
+}
+.color {
+  border-color: #000;
+  border-width: thin;
+  /* border: solid; */
+  width: 12px;
+  height: 12px;
+  margin: 5px;
+  display: inline-block
+}
+#red {
+  background-color: red
+}
+#orange {
+  background-color: orange
+}
+#yellow {
+  background-color: yellow
+}
+#green {
+  background-color: green
+}
+#blue {
+  background-color: blue
+}
+#indigo {
+  background-color: indigo
+}
+#violet {
+  background-color: violet
+}
+#black {
+  background-color: black;
+}
+
+#eraser {
+  border-radius: 50%;
+  font-size: 8px;
+  display: block;
+  margin: 0 auto;
 }
 
 /* other classes */
 
 /* login "page" */
 
-div {
-  background: #2fbfbf;
-}
+
 #login-div {
-  display: inline-block;
-  background-color:rgb(19,20,38);
-  padding: 10% 50px;
-  height: 100%;
+  justify-content: center;
+}
+
+#login-sidebar {
+  display:block;
+  background-color: #131426;
+  padding: 50% 50px;
+  height:100%;
   width:300px;
   left: -10px;
   top: -10px;
   bottom: -10px;
-  float:left;
-}
-
-#login-form {
-  justify-content: center;
-  align-content: center;
 }
 
 #login-input {
   width:100%;
+  height: 100%;
   text-align:center;
   margin: 0 auto;
 }
 
+
 #login-layout {
-  display:flex
+  display:flex;
+  width: 100%;
+  height: 100%;
 }
 
 #content-div {
@@ -45,30 +119,21 @@ div {
   width: 100%;
 }
 
-.hide {
-  display: none;
+div.hidden {
+  visibility: hidden;
 }
 
 #enter {
-  
-}
-
-/* button settings */
-
-.login-button {
-  border: solid;
   text-align: center;
-  border-radius: 10%;
-  background-color: rgb(236,76,46);
-  color:white;
-  margin: 20 auto;
+  border-radius: 5%;
+  background: "pink";
   width: 150px;
   height: 50px;
 }
 
 /* Paint Room */
 
-#paintroom {
+.paintroom {
   display: flex;
 }
 
@@ -93,60 +158,5 @@ div {
 #sidebar-contents li{
   display:block;
   margin: 40px;
+
 }
-
-#palette {
-  position:relative;
-  border-color: silver;
-  border-bottom-style: solid;
-  border-right-style: solid;
-  border-width: light;
-  width: 60px;
-  height: 120px;
-  overflow: hidden;
-  border-radius: 5%;
-}
-
-/* Inner palette settings  */
-
-  .color {
-    border-color: #000;
-    border-width: thin;
-    position: relative;
-    width: 12px;
-    height: 12px;
-    margin: 3px;
-    display: inline-block;
-  }
-
-  #red {
-    background-color: red
-  }
-  #orange {
-    background-color: orange
-  }
-  #yellow {
-    background-color: yellow
-  }
-  #green {
-    background-color: green
-  }
-  #blue {
-    background-color: blue
-  }
-  #indigo {
-    background-color: indigo
-  }
-  #violet {
-    background-color: violet
-  }
-  #black {
-    background-color: black;
-  }
-
-  #eraser {
-    border-radius: 50%;
-    font-size: 8px;
-    display: block;
-    margin: 0 auto;
-  }

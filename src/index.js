@@ -11,13 +11,12 @@ let userWebSocket
 
 enterBtn.addEventListener('click', () => {    
     canvas = document.querySelector('#myCanvas')
+    ctx = canvas.getContext('2d')
 
-    paper.install(window)
-    paper.setup(canvas)
 
     loginDiv.remove()
-    paintRoom.classList.remove('hidden')
-
+    loadPaintRoom()
+    set_current_user()
 
     circleWebSocket = openConnection()
     circleWebSocket.onopen = event => {
@@ -37,6 +36,8 @@ enterBtn.addEventListener('click', () => {
     const eraser = document.querySelector('#eraser')
     const brush_size_slider = document.getElementById("brush-size-slider")
 
+    paper.install(window);
+    paper.setup(canvas);
     // Create a simple drawing tool:
     var tool = new Tool();
     let path = new Path();
@@ -137,10 +138,13 @@ enterBtn.addEventListener('click', () => {
     })
 
     liveCircleSocket(circleWebSocket)
-    clearBtn.addEventListener('click', () => {
-        project.activeLayer.removeChildren()
-    })
+
+    clearBtn.addEventListener('click', clearCanvas)
 })
+
+function loadPaintRoom() {
+    paintRoom.classList.remove('hidden')
+}
 
 function openConnection() {
     return new WebSocket('ws://localhost:3000/cable')
@@ -148,4 +152,8 @@ function openConnection() {
 
 function set_current_user() {
 
+}
+
+function clearCanvas () {
+    project.activeLayer.removeChildren()
 }
