@@ -5,7 +5,6 @@ let userWebSocket
 
 enterBtn.addEventListener('click', () => {
     const canvas = document.querySelector('#myCanvas')
-    let ws
 
     enterBtn.parentElement.parentNode.remove()
     body.append(createSidebar())
@@ -33,15 +32,12 @@ enterBtn.addEventListener('click', () => {
 
     paper.install(window);
     paper.setup(canvas);
-    // Create a simple drawing tool:
+
     var tool = new Tool();
     let path = new Path();
     let color = "black";
     let strokeWidth = 1
     path.strokeColor = color
-
-    // Define a mousedown and mousedrag handler
-
 
     tool.onMouseDown = function (event) {
         path = new Path();
@@ -57,8 +53,7 @@ enterBtn.addEventListener('click', () => {
         circleWebSocket.send(JSON.stringify(msg))
 
     }
-
-        tool.maxDistance = 4
+        tool.maxDistance = 2
         tool.onMouseDrag = function (event) {
             var circle = new Path.Circle({
                 center: event.middlePoint,
@@ -73,14 +68,15 @@ enterBtn.addEventListener('click', () => {
             \"action\": \"send_circle\",
             \"x\": \"${event.point.x}\",
             \"y\": \"${event.point.y}\",
-            \"strokeColor\": \"${color}\",                  \"strokeWidth\": \"${strokeWidth}\"
+            \"strokeColor\": \"${color}\",
+            \"strokeWidth\": \"${strokeWidth}\"
             }`
         }
         // console.log(msg)
         circleWebSocket.send(JSON.stringify(msg))
         }//end mouseDrag
 
-    tool.maxDistance = 10
+    tool.maxDistance = 4
 
     tool.onMouseDrag = function (event) {
         var circle = new Path.Circle({
@@ -104,18 +100,18 @@ enterBtn.addEventListener('click', () => {
     }//end mouseDrag
 
 
-        liveCircleSocket(circleWebSocket)
+      liveCircleSocket(circleWebSocket)
 
-        function liveCircleSocket(circleWebSocket) {
-            circleWebSocket.onmessage = event => {
-                let result = JSON.parse(event.data)
-                console.log(result['message'])
-                if (result['message']['x']) {
-                    var circle = new Path.Circle(new Point(parseInt(result['message']['x']), parseInt(result['message']['y'])), result['message']['strokeWidth'])
-                    circle.fillColor = result['message']['strokeColor'];
-                }
-            }//end liveCircleSocket function
-        }
+      function liveCircleSocket(circleWebSocket) {
+          circleWebSocket.onmessage = event => {
+              let result = JSON.parse(event.data)
+              console.log(result['message'])
+              if (result['message']['x']) {
+                  var circle = new Path.Circle(new Point(parseInt(result['message']['x']), parseInt(result['message']['y'])), result['message']['strokeWidth'])
+                  circle.fillColor = result['message']['strokeColor'];
+              }
+          }//end liveCircleSocket function
+      }
 
     palette.addEventListener('click', (e) => {
         if (e.target.className === "color") {
@@ -135,25 +131,20 @@ enterBtn.addEventListener('click', () => {
         brushWidth.innerText = `Brush size ${strokeWidth}:`
     })
 
-    liveCircleSocket(circleWebSocket)
 })
-
-function loadCanvas() {
-    const canvas = document.querySelector('#myCanvas')
-    canvas.classList.remove('hidden')
-}
-    
-
-function liveCircleSocket(circleWebSocket) {
-    circleWebSocket.onmessage = event => {
-        console.log(event.data);
-
-    }
-}//end liveCircleSocket function
 
 
 function openConnection() {
     return new WebSocket('ws://localhost:3000/cable')
+}
+
+function set_current_user() {
+
+}
+
+function loadCanvas() {
+  const canvas = document.querySelector('#myCanvas')
+  canvas.classList.remove('hidden')
 }
 
 function createSidebar() {
@@ -179,8 +170,3 @@ function createSidebar() {
 `
     return sidebar
 }
-
-function set_current_user() {
-
-}
-
