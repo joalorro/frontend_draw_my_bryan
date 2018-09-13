@@ -5,6 +5,8 @@ let userWebSocket
 const login_div = document.getElementById("login-div")
 const canvas = document.getElementById("myCanvas")
 const login_form = document.getElementById("login-form")
+const chat = document.getElementById("chat")
+const username_canvas = document.getElementById("username")
 
 login_form.addEventListener('submit', (event) => {
   event.preventDefault()
@@ -14,11 +16,11 @@ login_form.addEventListener('submit', (event) => {
   submit.classList.add('hidden')
   let username = login_input.value
   let username_div = document.createElement('div')
-  username_div.innerHTML = `Welcome ${username}`
+  username_div.innerHTML = `welcome ${username}`
 
   enterBtn.classList.remove('hidden')
   login_div.prepend(username_div)
-
+  username_canvas.innerText = username
 })
 
 enterBtn.addEventListener('click', () => {
@@ -35,10 +37,10 @@ enterBtn.addEventListener('click', () => {
         circleWebSocket.send(JSON.stringify(subscribeMsg))
     }
 
-    userWebSocket = openConnection()
-    userWebSocket.onopen = e => {
-        const subscribeUser = { "command": "subscribe", "identifier": "{\"channel\":\"UsersChannel\"}" }
-        userWebSocket.send(JSON.stringify(subscribeUser))
+    messageWebSocket = openConnection()
+    messageWebSocket.onopen = e => {
+        const subscribeUser = { "command": "subscribe", "identifier": "{\"channel\":\"MessagesChannel\"}" }
+        messageWebSocket.send(JSON.stringify(subscribeUser))
     }
 
     const brushWidth = document.querySelector('#brush-width')
@@ -65,7 +67,7 @@ enterBtn.addEventListener('click', () => {
         const msg = {
             "command": "message",
             "identifier": "{\"channel\":\"CirclesChannel\"}",
-            "data": `{\"action\": \"send_circle\",\"x\": \"${event.point.x}\",\"y\": \"${event.point.y}\",\"strokeColor\": \"${color}\",\"strokeWidth\": \"${strokeWidth}\"}`
+            "data": `{\"action\": \"send_circle\",\"x\": \"${event.point.x}\",\"y\": \"${event.point.y}\",\"strokeColor\": \"${color}\",\"strokeWidth\": \"${strokeWidth}\",\"username\": \"${username_canvas.innerText}\"}`
         }
         // console.log(msg)
         circleWebSocket.send(JSON.stringify(msg))
@@ -87,45 +89,26 @@ enterBtn.addEventListener('click', () => {
             \"x\": \"${event.point.x}\",
             \"y\": \"${event.point.y}\",
             \"strokeColor\": \"${color}\",
-            \"strokeWidth\": \"${strokeWidth}\"
+            \"strokeWidth\": \"${strokeWidth}\",
+            \"username\": \"${username_canvas.innerText}\"
             }`
         }
         // console.log(msg)
         circleWebSocket.send(JSON.stringify(msg))
         }//end mouseDrag
 
-    tool.maxDistance = 4
-
-    tool.onMouseDrag = function (event) {
-        var circle = new Path.Circle({
-            center: event.middlePoint,
-            radius: strokeWidth
-        });
-        circle.fillColor = color;
-
-        const msg = {
-            "command": "message",
-            "identifier": "{\"channel\":\"CirclesChannel\"}",
-            "data": `{
-                \"action\": \"send_circle\",
-                \"x\": \"${event.point.x}\",
-                \"y\": \"${event.point.y}\",
-                \"strokeColor\": \"${color}\",
-                \"strokeWidth\": \"${strokeWidth}\"
-            }`
-        }
-        circleWebSocket.send(JSON.stringify(msg))
-    }//end mouseDrag
 
       liveCircleSocket(circleWebSocket)
 
       function liveCircleSocket(circleWebSocket) {
           circleWebSocket.onmessage = event => {
               let result = JSON.parse(event.data)
+              if (result['message']['username'] !== username_canvas.innerText){
               if (result['message']['x']) {
                   var circle = new Path.Circle(new Point(parseInt(result['message']['x']), parseInt(result['message']['y'])), result['message']['strokeWidth'])
                   circle.fillColor = result['message']['strokeColor'];
               }
+            }
           }//end liveCircleSocket function
       }
 
@@ -137,7 +120,7 @@ enterBtn.addEventListener('click', () => {
     })
 
     eraser.addEventListener('click', () => {
-        strokeWidth = 5;
+        strokeWidth = 10;
         color = "white";
         brushWidth.innerText = strokeWidth
     })
@@ -147,8 +130,44 @@ enterBtn.addEventListener('click', () => {
         brushWidth.innerText = `Brush size ${strokeWidth}:`
     })
 
-})
+    const message_form = document.getElementById("new-message-form")
+    message_form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      let chat_input = document.getElementById("chat-input")
+      let chat_li = document.createElement("li")
+      chat_li.innerText = chat_input.value
+      chat.append(chat_li)
 
+      console.log(username_canvas.innerText);
+      const msg = {
+          "command": "message",
+          "identifier": "{\"channel\":\"MessagesChannel\"}",
+          "data": `{\"action\": \"send_message\",\"content\": \"${chat_input.value}\",\"username\": \"${username_canvas.innerText}\"}`
+      }
+      // console.log(msg)
+      messageWebSocket.send(JSON.stringify(msg))
+
+      message_form.reset()
+    })//end message_form event listener
+
+liveMessageSocket(messageWebSocket)
+
+    function liveMessageSocket(messageWebSocket) {
+        messageWebSocket.onmessage = event => {
+            let result = JSON.parse(event.data)
+
+          if(result['message']['content']){
+            if (result['message']['username'] !== username_canvas.innerText) {
+                let message = document.createElement('li')
+                message.innerText = result['message']['content']
+                chat.append(message)
+            }
+          }
+        }//end liveMessageSocket function
+    }
+
+
+})
 
 function openConnection() {
     return new WebSocket('ws://localhost:3000/cable')
