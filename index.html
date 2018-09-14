@@ -23,16 +23,16 @@
                     <h3 class="subtitle">Welcome To:</h1>
                 </div>
                 <div id="title-con">
-                    <h1 class='title'>Draw My Bryan</h1>
+                    <h1 class='title'><span id="draw">Draw</span> My <span id="bryan">Bryan</span></h1>
                 </div>
 
                 <!-- <div id="login-sidebar" class="side-bar"> -->
                     <div id="login-minibox">
                         <form action="" id="login-form">
                             <input type="text" id="login-input" placeholder="Enter/Create a Username">
-                            <input type="submit" id="submit" name="" value="Create User">
+                            <input type="submit" id="submit" class="button-style" value="Create User">
                         </form>
-                        <button class="hidden" id="enter">Enter Room!</button>
+                        <button class="hidden button-style" id="enter">Enter Room!</button>
                     </div>
                     <!-- </div> -->
             </div>
@@ -41,24 +41,24 @@
     <!-- Paint Room! -->
     <div id="paintroom" class="hidden paintroom">
         
-        <div id="left-div paintroom-contents">
+        <div id="left-div">
 
             <h4 id="username"></h4>
             <div id="chat-div">
                 <ul id="chat">
                 </ul>
-                <form id="new-message-form">
-                    <input type="text" id="chat-input">
-                    <input type="submit" value="send message">
-                </form>
+            </div>
+            <div id="msg-area">
+                <textarea id="msg-input" rows="4"> </textarea>
+                <button id="send-msg-btn" class="button-style">Send Message</button>
             </div>
         </div>
         
-        <div id="middle-div paintroom-contents">
+        <div id="middle-div">
             <canvas id="myCanvas"></canvas>
         </div>
 
-        <div id="right-div paintroom-contents">
+        <div id="right-div">
             <ul id="sidebar-contents">
                 <li>
                     <div id="palette">
@@ -70,7 +70,7 @@
                         <div class="color" id="indigo"></div>
                         <div class="color" id="violet"></div>
                         <div class="color" id="black"></div>
-                        <button id="eraser">Eraser!</button>
+                        <button id="eraser" class="button-style">Eraser!</button>
                     </div>
                 </li>
         
@@ -82,7 +82,7 @@
                 </li>
 
                 <li>
-                <button id="clear-btn">Clear Canvas</button>
+                <button id="clear-btn" class="button-style">Clear Canvas</button>
                 </li>
             </ul>
         </div>
