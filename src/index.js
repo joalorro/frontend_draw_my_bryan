@@ -135,7 +135,7 @@ enterBtn.addEventListener('click', () => {
       event.preventDefault();
       let chat_input = document.getElementById("chat-input")
       let chat_li = document.createElement("li")
-      chat_li.innerText = chat_input.value
+      chat_li.innerText = `${username_canvas.innerText}: ${chat_input.value}`
       chat.append(chat_li)
 
       console.log(username_canvas.innerText);
@@ -159,7 +159,7 @@ liveMessageSocket(messageWebSocket)
           if(result['message']['content']){
             if (result['message']['username'] !== username_canvas.innerText) {
                 let message = document.createElement('li')
-                message.innerText = result['message']['content']
+                message.innerText = `${result['message']['username']}: ${result['message']['content']}`
                 chat.append(message)
             }
           }
