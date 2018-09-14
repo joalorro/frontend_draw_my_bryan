@@ -28,7 +28,9 @@ loginForm.addEventListener('submit', (event) => {
 
     enterBtn.classList.remove('hidden')
     loginBox.prepend(usernameDiv)
-    usernameCanvas.innerText = username
+    usernameCanvas.innerHTML += `
+        <span class="current-user">${username}</span>
+    `
     let user_li = document.createElement('li')
     user_li = username
     onlineUsers.append(user_li)
@@ -142,30 +144,23 @@ enterBtn.addEventListener('click', () => {
     liveMessageSocket(messageWebSocket)
 })//finish enterBtn eventlistener
 
-function loadPaintRoom() {
-    paintRoom.classList.remove('hidden')
-    paintRoom.style.display = 'grid'
-}
+    const sendMsgBtn = document.getElementById("send-msg-btn")
+    const msgInput = document.getElementById('msg-input')
 
-    const message_form = document.getElementById("new-message-form")
-    message_form.addEventListener('submit', (event) => {
-    event.preventDefault();
-    let chat_input = document.getElementById("chat-input")
-    let chat_li = document.createElement("li")
-    chat_li.innerText = `${usernameCanvas.innerText}: ${chat_input.value}`
-    chat.append(chat_li)
-
-    console.log(usernameCanvas.innerText);
-    const msg = {
-        "command": "message",
-        "identifier": "{\"channel\":\"MessagesChannel\"}",
-        "data": `{\"action\": \"send_message\",\"content\": \"${chat_input.value}\",\"username\": \"${usernameCanvas.innerText}\"}`
-    }
-    // console.log(msg)
-    messageWebSocket.send(JSON.stringify(msg))
-
-    message_form.reset()
-    })//end message_form event listener
+    sendMsgBtn.addEventListener('click', (event) => {
+        let chat_li = document.createElement("li")
+        chat_li.innerHTML = `
+        <span class="user-msg">${usernameCanvas.innerText}</span>: ${msgInput.value}
+        `
+        chat.prepend(chat_li)
+        const msg = {
+            "command": "message",
+            "identifier": "{\"channel\":\"MessagesChannel\"}",
+            "data": `{\"action\": \"send_message\",\"content\": \"${msgInput.value}\",\"username\": \"${usernameCanvas.innerText}\"}`
+        }
+        messageWebSocket.send(JSON.stringify(msg))
+        msgInput.value = ''
+    })//end sendMsgBtn event listener
 
 function liveMessageSocket(messageWebSocket) {
     messageWebSocket.onmessage = event => {
@@ -197,9 +192,9 @@ function openConnection() {
     return new WebSocket('ws://localhost:3000/cable')
 }
 
-function loadCanvas() {
-    canvas = document.querySelector('#myCanvas')
-    canvas.classList.remove('hidden')
+function loadPaintRoom() {
+    paintRoom.classList.remove('hidden')
+    paintRoom.style.display = 'grid'
 }
 
 function clearCanvas () {

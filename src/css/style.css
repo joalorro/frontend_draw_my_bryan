@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css?family=Raleway');
 @import url('https://fonts.googleapis.com/css?family=Archivo+Narrow');
 @import url('https://fonts.googleapis.com/css?family=Permanent+Marker');
 
@@ -15,11 +16,9 @@ body {
 }
 /* Paint Room */
 
-#side-bar {
+#sidebar {
   background:#131426;
-  float: right;
   height: 100%;
-  margin-left: 100px;
   width:100%;
   display: block;
 }
@@ -27,8 +26,8 @@ body {
 #myCanvas {
   border: solid;
   border-width: light;
-  min-width: 500px;
-  min-height: 500px;
+  min-width: 700px;
+  min-height: 700px;
   background-color: white;
 }
 
@@ -85,6 +84,14 @@ body {
 /* other classes */
 
 /* login "page" */
+
+#draw {
+  color: #80a5be;
+}
+
+#bryan {
+  color: #ff3CAA;
+}
 
 #login-div {
   justify-content: center;
@@ -182,17 +189,15 @@ body {
     "header header header header header header header"
     "#left-div #left-div #middle-div #middle-div #middle-div #right-div #right-div"
     "footer footer footer footer footer footer footer"; */
-  grid-gap: 1rem;
-}
-
-div.paintroom-contents {
-  border: solid;
-  border-color: black;
-  border-width: 2px;
+  grid-gap: .5rem;
 }
 
 #left-div {
   height: 100%;
+  background:rgba(75,0,130,.25);
+  padding: 10px;
+  border-radius: 25px;
+  box-sizing: border-box;
 }
 
 #middle-div {
@@ -205,15 +210,67 @@ div.paintroom-contents {
   width: 750px;
   height: 750px;
   background:white;
-  margin: 20px;
 }
 
 #right-div{
   background-color:rgb(19,20,38);
   color: white;
+  height:100%;
+  box-sizing: border-box;
 }
 
 #sidebar-contents li{
   display:block;
   margin-bottom: 40px;
+}
+
+#chat-div {
+  height:400px;
+  width:100%;
+  overflow:auto;
+  padding-top: 2px;
+  border: 2px solid #8ccabf;
+  background:white;
+  margin-bottom: 40px;
+}
+
+#chat-div, h4 {
+  font-family: 'Raleway', sans-serif;
+  box-sizing: border-box;
+}
+
+ul {
+  list-style: none;
+  padding-left: 2px;
+}
+
+#chat li {
+  margin-top: 2px;
+}
+
+#msg-input {
+  border: none;
+  border-radius: 20px;
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.user-msg, .current-user {
+  color: #c5ebff; 
+}
+
+/* Buttons */
+
+.button-style {
+  border-radius: 15px;
+  border: none;
+  color: white;
+  text-align:center;
+  background: #8ccabf;
+  height: 20px;
+}
+
+#sendMsgBtn {
+  float:right;
 }
