@@ -1,13 +1,13 @@
 const body = document.querySelector('body')
 
 // grab all initial login elements
-const loginContentDiv = document.querySelector('#login-content')
+const contentDiv = document.querySelector('#content-div')
 const loginSidebarDiv = document.getElementById("login-sidebar")
 const loginForm = document.getElementById("login-form")
 const loginInput = document.getElementById('login-input')
 const enterBtn = document.querySelector('#enter')
 const loginBox = document.querySelector('#login-minibox')
-
+const onlineUsers = document.getElementById('online')
 //grab paint room elements
 const paintRoom = document.querySelector('#paintroom')
 const chat = document.getElementById("chat")
@@ -29,6 +29,9 @@ loginForm.addEventListener('submit', (event) => {
     enterBtn.classList.remove('hidden')
     loginBox.prepend(usernameDiv)
     usernameCanvas.innerText = username
+    let user_li = document.createElement('li')
+    user_li = username
+    onlineUsers.append(user_li)
 })
 
 
@@ -43,7 +46,7 @@ enterBtn.addEventListener('click', () => {
 
     let color_form = document.getElementById("color-form")
 
-    loginContentDiv.remove()
+    contentDiv.remove()
     set_current_user()
 
     paper.install(window);
@@ -53,7 +56,7 @@ enterBtn.addEventListener('click', () => {
     let tool = new Tool();
     let path = new Path();
     let color = "black";
-    let strokeWidth = 1
+    let strokeWidth = 5
     path.strokeColor = color
 
     circleWebSocket = openConnection()
@@ -118,7 +121,7 @@ enterBtn.addEventListener('click', () => {
     eraser.addEventListener('click', () => {
         strokeWidth = 10;
         color = "white";
-        brushWidth.innerText = strokeWidth
+        brushWidth.innerText = `Eraser size: ${strokeWidth}`
     })
 
     brush_size_slider.addEventListener('input', () => {
@@ -140,14 +143,14 @@ function loadPaintRoom() {
       event.preventDefault();
       let chat_input = document.getElementById("chat-input")
       let chat_li = document.createElement("li")
-      chat_li.innerText = `${username_canvas.innerText}: ${chat_input.value}`
+      chat_li.innerText = `${usernameCanvas.innerText}: ${chat_input.value}`
       chat.append(chat_li)
 
-      console.log(username_canvas.innerText);
+      console.log(usernameCanvas.innerText);
       const msg = {
           "command": "message",
           "identifier": "{\"channel\":\"MessagesChannel\"}",
-          "data": `{\"action\": \"send_message\",\"content\": \"${chat_input.value}\",\"username\": \"${username_canvas.innerText}\"}`
+          "data": `{\"action\": \"send_message\",\"content\": \"${chat_input.value}\",\"username\": \"${usernameCanvas.innerText}\"}`
       }
       // console.log(msg)
       messageWebSocket.send(JSON.stringify(msg))
@@ -166,7 +169,19 @@ function liveMessageSocket(messageWebSocket) {
                 chat.append(message)
             }
         }
+        if(result["message"]["history"]) {
+            renderChatHistory(result["message"]["history"])
+          }
     }//end liveMessageSocket function
+
+    function renderChatHistory(message_history) {
+        message_history.forEach(message => {
+          const old_message = document.createElement('li')
+          old_message.innerText =`${message['username']}: ${message['content']}`
+          chat.prepend(old_message)
+          // renderChatMessage(msg.username, newText.message)
+        })
+      }//end fucntion renderChatHistory
 }
 
 function openConnection() {
