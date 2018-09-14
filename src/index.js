@@ -12,7 +12,7 @@ const onlineUsers = document.getElementById('online')
 const paintRoom = document.querySelector('#paintroom')
 const chat = document.getElementById("chat")
 const usernameCanvas = document.getElementById("username")
-
+const hue_slider = document.getElementById('hue-slider')
 // initializing connection variables
 let circleWebSocket
 let userWebSocket
@@ -106,7 +106,8 @@ enterBtn.addEventListener('click', () => {
             radius: strokeWidth
         });
         circle.fillColor = color;
-
+        circle.fillColor.hue += hue_slider.value;
+        console.log(circle.fillColor.hue);
         const msg = {
             "command":"message",
             "identifier":"{\"channel\":\"CirclesChannel\"}",
@@ -138,6 +139,13 @@ enterBtn.addEventListener('click', () => {
     brush_size_slider.addEventListener('input', () => {
         strokeWidth = brush_size_slider.value
         brushWidth.innerText = `Brush size ${strokeWidth}:`
+    })
+
+    hue_slider.addEventListener('input', () => {
+
+
+        console.log(hue_slider.value);
+        console.log(path.color)
     })
 
     clearBtn.addEventListener('click', clearCanvas)
