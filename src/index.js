@@ -154,19 +154,6 @@ function loadPaintRoom() {
 
       message_form.reset()
     })//end message_form event listener
->>>>>>> create_users
-
-        console.log(usernameCanvas.innerText);
-        const msg = {
-            "command": "message",
-            "identifier": "     {\"channel\":\"MessagesChannel\"}",
-            "data": `{\"action\": \"send_message\",\"content\": \"${chat_input.value}\",\"username\": \"${usernameCanvas.innerText}\"}`
-        }
-    // console.log(msg)
-        messageWebSocket.send(JSON.stringify(msg))
-
-        message_form.reset()
-    })//end message_form event listener
 
 function liveMessageSocket(messageWebSocket) {
     messageWebSocket.onmessage = event => {
