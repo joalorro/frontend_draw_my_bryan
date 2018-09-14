@@ -11,6 +11,8 @@ html {
   padding: 0;
 }
 
+body {
+}
 /* Paint Room */
 
 #side-bar {
@@ -19,6 +21,7 @@ html {
   height: 100%;
   margin-left: 100px;
   width:100%;
+  display: block;
 }
 
 #myCanvas {
@@ -26,20 +29,14 @@ html {
   border-width: light;
   min-width: 500px;
   min-height: 500px;
-  margin-top: 100px;
-  margin-right:100px;
-  margin-left: 100px;
   background-color: white;
 }
 
 #palette {
   /* display:inline-flex; */
-  
   border-color: #000;
   border-bottom-style: solid;
   border-right-style: solid;
-  border-width: light;
-  
   width: 50px;
   height: 120px;
   margin-top: 100px;
@@ -89,12 +86,12 @@ html {
 
 /* login "page" */
 
-#login-layout {
+/* #login-layout {
   display:flex;
   width: 100%;
   height: 900px;
-  max-height: 1500px;
-}
+  max-height: 1500px; */
+/* } */
 
 #login-div {
   justify-content: center;
@@ -102,12 +99,12 @@ html {
 
 #login-sidebar {
   display:block;
-  background-color: rgba(242, 242,252,.75);
+  /* background-color: rgba(242, 242,252,.75); */
   width:900px;;
   color: white;
-  border:solid;
-  border-width:1px;
-  border-color: rgb(180,	180,	238);
+  /* border:solid; */
+  /* border-width:1px; */
+  /* border-color: rgb(180,	180,	238); */
 }
 
 #login-form {
@@ -120,11 +117,12 @@ html {
 }
 
 #login-minibox {
-  background: rgb(180,	180,	238);
-  margin-top:250px;
-  width:100%;
-  height:150px;
-  padding-top: 30px;
+  /* background: rgb(180,	180,	238); */
+  display: block;
+  margin-top:50px;
+  width:150px;
+  height:q50px;
+  /* padding-top: 30px; */
   justify-content: center;
 }
 
@@ -133,9 +131,10 @@ html {
 }
 
 #content-text-div{
+  display: inline-block;
   position: absolute;
   top: 100px;
-  left: 370px;
+  left: 250px;
   width: 800px;
   height: 550px;
 }
@@ -152,29 +151,62 @@ html {
   height: 50px;
 }
 
+
+
 .subtitle {
+  display:block;
   margin: 20px;
   font-family: 'Archivo Narrow', sans-serif;
-  font-size: 96px;
+  font-size: 70px;
   left:900px;
+  justify-content: right;
+  width: 100%;
+}
+
+.subtitle-con {
+  justify-content: right;
 }
 
 .title {
   position: relative;
   font-family: 'Permanent Marker', cursive;
-  font-size: 100px;
-  width:900px;
+  font-size: 80px;
   float: left;
+  /* margin-top: 30px; */
+  color: #9370DB;
+}
+
+.welcome-user {
+  color: #388798
 }
 
 /* Paint Room */
 
-.paintroom {
+#paintroom {
+  display: hidden;
+  grid-template-columns: 1fr 2fr 1fr;
+  /* grid-template-areas: 
+    "header header header header header header header"
+    "#left-div #left-div #middle-div #middle-div #middle-div #right-div #right-div"
+    "footer footer footer footer footer footer footer"; */
+  grid-gap: 1rem;
+}
 
+div.paintroom-contents {
+  border: solid;
+  border-color: black;
+  border-width: 2px;
+}
+
+#left-div {
+  height: 100%;
+}
+
+#middle-div {
 }
 
 #myCanvas {
-  display: inline-block;
+
   border: solid;
   border-width: light;
   width: 500px;
@@ -183,8 +215,7 @@ html {
   margin: 20px;
 }
 
-#sidebar-container{
-  display: inline-block;
+#right-div{
   background-color:rgb(19,20,38);
   color: white;
 }
@@ -193,12 +224,4 @@ html {
   display:block;
   margin-bottom: 40px;
 
-}
-
-.upper-div {
-  display: inline-block;
-}
-
-.lower-div {
-  display: block;
 }
