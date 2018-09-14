@@ -1,7 +1,7 @@
 const body = document.querySelector('body')
 
 // grab all initial login elements
-const loginLayoutDiv = document.querySelector('#login-layout')
+const loginContentDiv = document.querySelector('#login-content')
 const loginSidebarDiv = document.getElementById("login-sidebar")
 const loginForm = document.getElementById("login-form")
 const loginInput = document.getElementById('login-input')
@@ -43,7 +43,7 @@ enterBtn.addEventListener('click', () => {
 
     let color_form = document.getElementById("color-form")
 
-    loginLayoutDiv.remove()
+    loginContentDiv.remove()
     set_current_user()
 
     paper.install(window);
@@ -137,13 +137,6 @@ function loadPaintRoom() {
 
     const message_form = document.getElementById("new-message-form")
     message_form.addEventListener('submit', (event) => {
-<<<<<<< HEAD
-        event.preventDefault();
-        let chat_input = document.getElementById("chat-input")
-        let chat_li = document.createElement("li")
-        chat_li.innerText = chat_input.value
-        chat.append(chat_li)
-=======
       event.preventDefault();
       let chat_input = document.getElementById("chat-input")
       let chat_li = document.createElement("li")
