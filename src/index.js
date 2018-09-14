@@ -137,11 +137,31 @@ function loadPaintRoom() {
 
     const message_form = document.getElementById("new-message-form")
     message_form.addEventListener('submit', (event) => {
+<<<<<<< HEAD
         event.preventDefault();
         let chat_input = document.getElementById("chat-input")
         let chat_li = document.createElement("li")
         chat_li.innerText = chat_input.value
         chat.append(chat_li)
+=======
+      event.preventDefault();
+      let chat_input = document.getElementById("chat-input")
+      let chat_li = document.createElement("li")
+      chat_li.innerText = `${username_canvas.innerText}: ${chat_input.value}`
+      chat.append(chat_li)
+
+      console.log(username_canvas.innerText);
+      const msg = {
+          "command": "message",
+          "identifier": "{\"channel\":\"MessagesChannel\"}",
+          "data": `{\"action\": \"send_message\",\"content\": \"${chat_input.value}\",\"username\": \"${username_canvas.innerText}\"}`
+      }
+      // console.log(msg)
+      messageWebSocket.send(JSON.stringify(msg))
+
+      message_form.reset()
+    })//end message_form event listener
+>>>>>>> create_users
 
         console.log(usernameCanvas.innerText);
         const msg = {
@@ -162,7 +182,7 @@ function liveMessageSocket(messageWebSocket) {
         if(result['message']['content']){
             if (result['message']['username'] !== usernameCanvas.innerText) {
                 let message = document.createElement('li')
-                message.innerText = result['message']['content']
+                message.innerText = `${result['message']['username']}: ${result['message']['content']}`
                 chat.append(message)
             }
         }
