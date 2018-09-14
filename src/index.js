@@ -28,9 +28,7 @@ loginForm.addEventListener('submit', (event) => {
 
     enterBtn.classList.remove('hidden')
     loginBox.prepend(usernameDiv)
-    usernameCanvas.innerHTML += `
-        <span class="current-user">${username}</span>
-    `
+    usernameCanvas.innerText = username
     let user_li = document.createElement('li')
     user_li = username
     onlineUsers.append(user_li)
@@ -172,12 +170,12 @@ enterBtn.addEventListener('click', () => {
 function liveMessageSocket(messageWebSocket) {
     messageWebSocket.onmessage = event => {
         let result = JSON.parse(event.data)
-
+        console.log(result['message'])
         if(result['message']['content']){
             if (result['message']['username'] !== usernameCanvas.innerText) {
                 let message = document.createElement('li')
                 message.innerText = `${result['message']['username']}: ${result['message']['content']}`
-                chat.append(message)
+                chat.prepend(message)
             }
         }
         if(result["message"]["history"]) {
