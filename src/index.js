@@ -1,7 +1,7 @@
 const body = document.querySelector('body')
 
 // grab all initial login elements
-const contentDiv = document.querySelector('#content-div')
+const loginContentDiv = document.querySelector('#content-div')
 const loginSidebarDiv = document.getElementById("login-sidebar")
 const loginForm = document.getElementById("login-form")
 const loginInput = document.getElementById('login-input')
@@ -23,7 +23,7 @@ loginForm.addEventListener('submit', (event) => {
     loginForm.remove()
     let username = loginInput.value
     let usernameDiv = document.createElement('div')
-    // usernameDiv.classList.add('')
+    usernameDiv.classList.add('welcome-user')
     usernameDiv.innerHTML = `Welcome ${username}!`
 
     enterBtn.classList.remove('hidden')
@@ -37,6 +37,7 @@ loginForm.addEventListener('submit', (event) => {
 
 enterBtn.addEventListener('click', () => {
     loadPaintRoom()
+    loginContentDiv.remove()
     const canvas = document.querySelector('#myCanvas')
     const brushWidth = document.querySelector('#brush-width')
     const palette = document.querySelector('#palette')
@@ -45,9 +46,6 @@ enterBtn.addEventListener('click', () => {
     const clearBtn = document.querySelector('#clear-btn')
 
     let color_form = document.getElementById("color-form")
-
-    contentDiv.remove()
-    set_current_user()
 
     paper.install(window);
     paper.setup(canvas);
@@ -61,17 +59,28 @@ enterBtn.addEventListener('click', () => {
 
     circleWebSocket = openConnection()
     circleWebSocket.onopen = event => {
-        const subscribeMsg = {"command":"subscribe","identifier":"{\"channel\":\"CirclesChannel\"}"}
-        circleWebSocket.send(JSON.stringify(subscribeMsg))
-    }
-
-    messageWebSocket = openConnection()
-    messageWebSocket.onopen = e => {
-        const subscribeUser = { "command": "subscribe", "identifier": "{\"channel\":\"MessagesChannel\"}" }
-        messageWebSocket.send(JSON.stringify(subscribeUser))
+        const subscribeCircles = {"command":"subscribe","identifier":"{\"channel\":\"CirclesChannel\"}"}
+        circleWebSocket.send(JSON.stringify(subscribeCircles))
     }
 
     liveCircleSocket(circleWebSocket)
+
+    messageWebSocket = openConnection()
+    messageWebSocket.onopen = e => {
+        const subscribeMsg = { "command": "subscribe", "identifier": "{\"channel\":\"MessagesChannel\"}" }
+        messageWebSocket.send(JSON.stringify(subscribeMsg))
+    }
+
+    userWebSocket = openConnection()
+    userWebSocket.onopen = e => {
+        set_current_user()
+        const subscribeUser = {
+            "command": "subscribe", "identifier": "{\"channel\":\"UsersChannel\"}" 
+        }
+        userWebSocket.send(JSON.stringify(subscribeUser))
+    }
+
+
 
     tool.onMouseDown = function (event) {
         path = new Path();
@@ -135,27 +144,27 @@ enterBtn.addEventListener('click', () => {
 
 function loadPaintRoom() {
     paintRoom.classList.remove('hidden')
-    paintRoom.style.display = 'block'
+    paintRoom.style.display = 'grid'
 }
 
     const message_form = document.getElementById("new-message-form")
     message_form.addEventListener('submit', (event) => {
-      event.preventDefault();
-      let chat_input = document.getElementById("chat-input")
-      let chat_li = document.createElement("li")
-      chat_li.innerText = `${usernameCanvas.innerText}: ${chat_input.value}`
-      chat.append(chat_li)
+    event.preventDefault();
+    let chat_input = document.getElementById("chat-input")
+    let chat_li = document.createElement("li")
+    chat_li.innerText = `${usernameCanvas.innerText}: ${chat_input.value}`
+    chat.append(chat_li)
 
-      console.log(usernameCanvas.innerText);
-      const msg = {
-          "command": "message",
-          "identifier": "{\"channel\":\"MessagesChannel\"}",
-          "data": `{\"action\": \"send_message\",\"content\": \"${chat_input.value}\",\"username\": \"${usernameCanvas.innerText}\"}`
-      }
-      // console.log(msg)
-      messageWebSocket.send(JSON.stringify(msg))
+    console.log(usernameCanvas.innerText);
+    const msg = {
+        "command": "message",
+        "identifier": "{\"channel\":\"MessagesChannel\"}",
+        "data": `{\"action\": \"send_message\",\"content\": \"${chat_input.value}\",\"username\": \"${usernameCanvas.innerText}\"}`
+    }
+    // console.log(msg)
+    messageWebSocket.send(JSON.stringify(msg))
 
-      message_form.reset()
+    message_form.reset()
     })//end message_form event listener
 
 function liveMessageSocket(messageWebSocket) {
@@ -171,25 +180,21 @@ function liveMessageSocket(messageWebSocket) {
         }
         if(result["message"]["history"]) {
             renderChatHistory(result["message"]["history"])
-          }
+        }
     }//end liveMessageSocket function
 
     function renderChatHistory(message_history) {
         message_history.forEach(message => {
-          const old_message = document.createElement('li')
-          old_message.innerText =`${message['username']}: ${message['content']}`
-          chat.prepend(old_message)
-          // renderChatMessage(msg.username, newText.message)
+        const old_message = document.createElement('li')
+        old_message.innerText =`${message['username']}: ${message['content']}`
+        chat.prepend(old_message)
+        // renderChatMessage(msg.username, newText.message)
         })
-      }//end fucntion renderChatHistory
+    }//end fucntion renderChatHistory
 }
 
 function openConnection() {
     return new WebSocket('ws://localhost:3000/cable')
-}
-
-function set_current_user() {
-
 }
 
 function loadCanvas() {
@@ -212,3 +217,15 @@ function liveCircleSocket(circleWebSocket) {
         }
     }
 }//end liveCircleSocket function
+
+function liveUserSocket(userWebSocket) {
+    userWebSocket.onmessage = e => {
+
+        let result 
+
+    }
+}
+function setCurrentUser() {
+
+}
+
