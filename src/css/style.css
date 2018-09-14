@@ -77,6 +77,36 @@ html {
 #black {
   background-color: black;
 }
+#maroon {
+  background-color: maroon;
+}
+#olive {
+  background-color: olive;
+}
+#lime {
+  background-color: lime;
+}
+#aqua {
+  background-color: aqua;
+}
+#teal {
+  background-color: teal;
+}
+#navy {
+  background-color: navy;
+}
+#fuchsia {
+  background-color: fuchsia;
+}
+#silver {
+  background-color: silver;
+}
+#gray {
+  background-color: gray;
+}
+
+
+
 
 #eraser {
   border-radius: 50%;
