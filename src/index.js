@@ -12,7 +12,7 @@ const onlineUsers = document.getElementById('online')
 const paintRoom = document.querySelector('#paintroom')
 const chat = document.getElementById("chat")
 const usernameCanvas = document.getElementById("username")
-const hue_slider = document.getElementById('hue-slider')
+// const hue_slider = document.getElementById('hue-slider')
 // initializing connection variables
 let circleWebSocket
 let userWebSocket
@@ -75,7 +75,7 @@ enterBtn.addEventListener('click', () => {
 
     userWebSocket = openConnection()
     userWebSocket.onopen = e => {
-        set_current_user()
+
         const subscribeUser = {
             "command": "subscribe", "identifier": "{\"channel\":\"UsersChannel\"}" 
         }
@@ -106,8 +106,7 @@ enterBtn.addEventListener('click', () => {
             radius: strokeWidth
         });
         circle.fillColor = color;
-        circle.fillColor.hue += hue_slider.value;
-        console.log(circle.fillColor.hue);
+        // circle.fillColor.hue += hue_slider.value;
         const msg = {
             "command":"message",
             "identifier":"{\"channel\":\"CirclesChannel\"}",
@@ -141,12 +140,12 @@ enterBtn.addEventListener('click', () => {
         brushWidth.innerText = `Brush size ${strokeWidth}:`
     })
 
-    hue_slider.addEventListener('input', () => {
+    // hue_slider.addEventListener('input', () => {
 
 
-        console.log(hue_slider.value);
-        console.log(path.color)
-    })
+    //     console.log(hue_slider.value);
+    //     console.log(path.color)
+    // })
 
     clearBtn.addEventListener('click', clearCanvas)
     liveMessageSocket(messageWebSocket)
