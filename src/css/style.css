@@ -324,6 +324,10 @@ ul {
   height: 20px;
 }
 
-#sendMsgBtn {
+#send-msg-btn {
+  margin-top: 10px;
   float:right;
 }
+
+/* Misc */
+

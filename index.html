@@ -13,43 +13,40 @@
     <script type="text/paperscript" canvas="myCanvas"></script>
 </head>
 <body>
-    <!-- <div id="login-layout"> -->
 
         <!-- Content -->
 
-        <div id="content-div">
-            <div id="content-text-div">
-                <div id="subtitle-con">
-                    <h3 class="subtitle">Welcome To:</h1>
-                </div>
-                <div id="title-con">
-                    <h1 class='title'><span id="draw">Draw</span> My <span id="bryan">Bryan</span></h1>
-                </div>
+    <div id="content-div">
+        <div id="content-text-div">
+            <div id="subtitle-con">
+                <h3 class="subtitle">Welcome To:</h1>
+            </div>
+            <div id="title-con">
+                <h1 class='title'><span id="draw">Draw</span> My <span id="bryan">BRYAN</span></h1>
+            </div>
 
-                <!-- <div id="login-sidebar" class="side-bar"> -->
-                    <div id="login-minibox">
-                        <form action="" id="login-form">
-                            <input type="text" id="login-input" placeholder="Enter/Create a Username">
-                            <input type="submit" id="submit" class="button-style" value="Create User">
-                        </form>
-                        <button class="hidden button-style" id="enter">Enter Room!</button>
-                    </div>
-                    <!-- </div> -->
+            <div id="login-minibox">
+                <form action="" id="login-form">
+                    <input type="text" id="login-input" placeholder="Enter/Create a Username">
+                    <input type="submit" id="submit" class="button-style" value="Create User">
+                </form>
+                <button class="hidden button-style" id="enter">Enter Room!</button>
             </div>
         </div>
     </div>
     <!-- Paint Room! -->
     <div id="paintroom" class="hidden paintroom">
         <div id="left-div">
-
             <h4 id="username"></h4>
             <div id="chat-div">
                 <ul id="chat">
                 </ul>
             </div>
             <div id="msg-area">
-                <textarea id="msg-input" rows="4"> </textarea>
-                <button id="send-msg-btn" class="button-style">Send Message</button>
+                <form id="msg-form">
+                    <input type="text" id="msg-input">
+                    <input type="submit" id="send-msg-btn" class="button-style" value="Send Message">
+                </form>
             </div>
         </div>
         

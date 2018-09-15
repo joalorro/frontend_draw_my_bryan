@@ -148,11 +148,12 @@ enterBtn.addEventListener('click', () => {
     clearBtn.addEventListener('click', clearCanvas)
     liveMessageSocket(messageWebSocket)
 })//finish enterBtn eventlistener
-
+    const msgForm = document.getElementById('msg-form')
     const sendMsgBtn = document.getElementById("send-msg-btn")
     const msgInput = document.getElementById('msg-input')
 
-    sendMsgBtn.addEventListener('click', (event) => {
+    msgForm.addEventListener('submit', (event) => {
+        event.preventDefault()
         let chat_li = document.createElement("li")
         chat_li.innerHTML = `
         <span class="user-msg">${usernameCanvas.innerText}</span>: ${msgInput.value}
@@ -170,7 +171,6 @@ enterBtn.addEventListener('click', () => {
 function liveMessageSocket(messageWebSocket) {
     messageWebSocket.onmessage = event => {
         let result = JSON.parse(event.data)
-        console.log(result['message'])
         if(result['message']['content']){
             if (result['message']['username'] !== usernameCanvas.innerText) {
                 let message = document.createElement('li')
