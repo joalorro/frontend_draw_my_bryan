@@ -34,21 +34,12 @@ html,body {
   display: block;
 }
 /* Paint Room */
-
-/* #sidebar {
-
-  height: 100%;
-  width:100%;
-  display: block;
-} */
-
 #palette {
-  /* display:inline-flex; */
   border-color: #000;
   border-bottom-style: solid;
   border-right-style: solid;
   width: 100%;
-  min-width: 200px
+  min-width: 200px;
   height: 160px;
   margin-top: 100px;
   border-radius: 20px;

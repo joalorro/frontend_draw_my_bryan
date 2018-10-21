@@ -73,14 +73,11 @@ enterBtn.addEventListener('click', () => {
 
     userWebSocket = openConnection()
     userWebSocket.onopen = e => {
-
         const subscribeUser = {
             "command": "subscribe", "identifier": "{\"channel\":\"UsersChannel\"}" 
         }
         userWebSocket.send(JSON.stringify(subscribeUser))
     }
-
-
 
     tool.onMouseDown = function (event) {
         path = new Path();
