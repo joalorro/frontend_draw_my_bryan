@@ -1,4 +1,6 @@
-# Draw With Me
+# Draw With Me 
+
+Draw With Me is an app that provides a canvas for users to collaboratively draw together. It utilizes ActionCable to drive the real-time updates within the canvas and chat feature.
 
 ### Installation
 
